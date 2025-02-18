@@ -3,6 +3,7 @@ const searchBtn = document.querySelector('.search-btn');
 
 const apiKey = '8dbc722b1ba22c52e526eb9b6fa43e87'
 
+const weatherInfoSection = document.querySelector('.weather-info')
 const notFoundSection = document.querySelector('.not-found')
 const searchCitySection = document.querySelector('.search-city');
 
@@ -34,13 +35,26 @@ async function getFetchData(endPoint, city){
 async function updateWeatherInfo(city){
     const weatherData = await getFetchData('weather', city)
 
-    if (weatherData.weatherData.cod != 200){
+    if (weatherData.cod != 200){
         showDisplaySection(notFoundSection)
         return
     }
-    
+    console.log(weatherData)
+
+    const {
+        name: country,
+        main: {
+            temp, humidity,
+        },
+        weather: [{ id, main}],
+        wind: {speed}
+    } = weatherData
+    showDisplaySection(weatherInfoSection)
 }
 
 function showDisplaySection(section) {
+    [weatherInfoSection, searchCitySection, notFoundSection]
+        .forEach(section => section.style.display ='none')
 
+    section.style.display = 'flex'
 }
